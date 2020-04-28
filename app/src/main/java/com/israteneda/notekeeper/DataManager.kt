@@ -9,7 +9,20 @@ object DataManager {
         initializeNotes()
     }
 
-    private fun initializeCourses() {
+    fun addNote(course: CourseInfo, noteTitle: String, noteText: String): Int {
+        val note = NoteInfo(course, noteTitle, noteText)
+        notes.add(note)
+        return notes.lastIndex
+    }
+
+    fun findNote(course: CourseInfo, noteTitle: String, noteText: String): NoteInfo? {
+        for (note in notes)
+            if (course == note.course && noteTitle == note.title && noteText == note.text)
+                return note
+        return null
+    }
+
+    fun initializeCourses() {
         var course = CourseInfo(title = "Java Fundamentals: The Java Language", courseId = "java_lang")
         courses.set(course.courseId, course)
 
@@ -24,7 +37,7 @@ object DataManager {
         courses.set(course.courseId, course)
     }
 
-    private fun initializeNotes() {
+    fun initializeNotes() {
         var note = NoteInfo(courses["android_intents"] as CourseInfo, "Dynamic intent resolution", "Wow intents allow components to be resolved at runtime")
         notes.add(note)
 
