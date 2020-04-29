@@ -4,6 +4,7 @@ import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
@@ -17,11 +18,13 @@ import org.junit.runner.RunWith
 class NextThroughNotes{
 
     @Rule @JvmField
-    val noteListActivity = ActivityTestRule(NoteListActivity::class.java)
+    val itemsActivity = ActivityTestRule(ItemsActivity::class.java)
 
     @Test
     fun nextThroughNotes() {
-        onData(allOf(instanceOf(NoteInfo::class.java), equalTo(DataManager.notes[0]))).perform(click())
+        onView(withId(R.id.listItems)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<NoteRecycleAdapter.ViewHolder>(0, click())
+        )
 
         for(index in 0..DataManager.notes.lastIndex){
             val note = DataManager.notes[index]
