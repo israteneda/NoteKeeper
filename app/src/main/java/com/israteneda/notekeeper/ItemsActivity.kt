@@ -30,7 +30,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private val noteRecycleAdapter by lazy { NoteRecycleAdapter(this, DataManager.notes) }
 
-    private val courseLayoutManager by lazy { GridLayoutManager(this, 2) }
+    private val courseLayoutManager by lazy { GridLayoutManager(this, resources.getInteger(R.integer.course_grid_span)) }
 
     private val courseRecycleAdapter by lazy { CourseRecycleAdapter(this, DataManager.courses.values.toList()) }
 
@@ -41,7 +41,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
-            startActivity(Intent(this, NoteListActivity::class.java))
+            startActivity(Intent(this, NoteActivity::class.java))
         }
 
         displayNotes()
@@ -53,6 +53,12 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+
+        val menu = nav_view.menu
+
+        val menuItem = menu.findItem(R.id.nav_how_many)
+
+        menuItem.title = "Notes: ${DataManager.notes.size} | Courses: ${DataManager.courses.size}"
 
         nav_view.setNavigationItemSelectedListener(this)
     }
@@ -86,6 +92,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
+        menu.findItem(R.id.nav_how_many)
         menuInflater.inflate(R.menu.items, menu)
         return true
     }
@@ -99,10 +106,15 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 displayCourses()
             }
             R.id.nav_share -> {
-                handleSelection("Don't you think you've shared enough")
+                handleSelection(R.string.nav_share_message)
             }
             R.id.nav_send -> {
-                handleSelection("Send")
+                handleSelection(R.string.nav_send_message)
+            }
+            R.id.nav_how_many -> {
+                val message = getString(R.string.nav_how_many_message_format,
+                DataManager.notes.size, DataManager.courses.size)
+                Snackbar.make(listItems, message, Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -110,8 +122,8 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-    private fun handleSelection(message: String) {
-        Snackbar.make(listItems, message, Snackbar.LENGTH_LONG).show()
+    private fun handleSelection(stringId: Int) {
+        Snackbar.make(listItems, stringId, Snackbar.LENGTH_LONG).show()
     }
 
 
