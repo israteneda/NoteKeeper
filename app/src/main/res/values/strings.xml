@@ -23,4 +23,10 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+    <string name="note_activity_label">Edit Note</string>
+    <string name="note_text_hint">Note text</string>
+    <string name="note_title_hint">Note title</string>
+    <string name="nav_share_message">Don\'t you think you\'ve shared enough</string>
+    <string name="nav_send_message">Send</string>
+    <string name="nav_how_many_message_format">Notes: %1$d | Courses: %2$d</string>
 </resources>

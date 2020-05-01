@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name=".NoteActivity"
-            android:label="@string/title_activity_main"
+            android:label="@string/note_activity_label"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NoteListActivity"

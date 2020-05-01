@@ -6,7 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+<!--        <item name="android:textSize">30sp</item>-->
+<!--        <item name="editTextStyle">@style/RedGreenEditText</item>-->
     </style>
+
+<!--    <style name="RedGreenEditText" parent="Widget.AppCompat.EditText">-->
+<!--        <item name="android:textColor">@android:color/holo_green_dark</item>-->
+<!--        <item name="android:textColorHint">@android:color/holo_red_dark</item>-->
+<!--    </style>-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -16,5 +24,26 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="NoteTitle" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:color">@color/pluralsightPlum</item>
+    </style>
+
+    <style name="BrandedText" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:color">@color/pluralsightOrange</item>
+    </style>
+
+    <style name="BrandedText.CourseName">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ModuleName" parent="BrandedText">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="AddFAB" parent="@style/Widget.Design.FloatingActionButton">
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+        <item name="srcCompat">@drawable/ic_add_white_24dp</item>
+    </style>
 
 </resources>
