@@ -8,3 +8,5 @@ this order:
 3. [Android Apps with Kotlin: RecyclerView and Navigation Drawer](https://github.com/israteneda/NoteKeeper/tree/recyclerview-and-navigation-drawer)
 4. [Android Apps with Kotlin: Resources, Styles, and Themes](https://github.com/israteneda/NoteKeeper/tree/resources-styles-and-themes)
 5. [Android Apps with Kotlin: ViewModel and Lifecycle](https://github.com/israteneda/NoteKeeper/tree/viewmodel-and-lifecycle)
+
+Note: Remember the source code of each course also it's in the main page of the course on Pluralsight in **Exercise Files** section.
