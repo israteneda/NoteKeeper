@@ -12,6 +12,11 @@
             android:id="@+id/nav_courses"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Courses" />
+
+        <item
+            android:id="@+id/nav_recently_notes"
+            android:icon="@drawable/ic_remove_red_eye_black_24dp"
+            android:title="Recently View Notes" />
     </group>
 
     <item android:title="Communicate">
