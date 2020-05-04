@@ -3,11 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_next"
         android:checkable="true"
         android:enabled="true"
         android:icon="@drawable/ic_forward_white_24dp"
-        android:title="Next"
+        android:title="@string/next"
         android:visible="true"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_get_together"
+        android:icon="@drawable/ic_people_white_24dp"
+        android:title="Action Get Together"
         app:showAsAction="ifRoom|withText" />
 </menu>

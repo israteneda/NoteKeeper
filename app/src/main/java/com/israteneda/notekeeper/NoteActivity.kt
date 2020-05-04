@@ -16,6 +16,12 @@ class NoteActivity : AppCompatActivity() {
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
 
+    val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
+
+    val locManager = PseudoLocationManager(this) { lat,lon ->
+        Log.d(tag, "Location Callback Lat:$lat Lon:$lon")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,6 +43,16 @@ class NoteActivity : AppCompatActivity() {
             createNote()
         }
         Log.d(tag, "onCreate")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        locManager.start()
+    }
+
+    override fun onStop() {
+        locManager.stop()
+        super.onStop()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -63,6 +79,7 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
+            R.id.action_settings -> true
             R.id.action_next -> {
                 if(notePosition < DataManager.notes.lastIndex){
                     moveNext()
@@ -70,6 +87,10 @@ class NoteActivity : AppCompatActivity() {
                     val message = "No more notes"
                     showMessage(message).show()
                 }
+                true
+            }
+            R.id.action_get_together -> {
+                noteGetTogetherHelper.sendMessage(DataManager.loadNote(notePosition))
                 true
             }
             else -> super.onOptionsItemSelected(item)
