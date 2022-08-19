@@ -8,22 +8,29 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_items.*
-import kotlinx.android.synthetic.main.app_bar_items.*
-import kotlinx.android.synthetic.main.content_items.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.israteneda.notekeeper.databinding.ActivityItemsBinding
+
 
 class ItemsActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     NoteRecycleAdapter.OnNoteSelectedListener{
 
+    /* bindings */
+    private lateinit var binding: ActivityItemsBinding
 
+    private lateinit var fab: FloatingActionButton
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var navView: NavigationView
+    private lateinit var listItems: RecyclerView
+    /* bindings */
 
     private val noteLayoutManager by lazy { LinearLayoutManager(this) }
 
@@ -44,39 +51,51 @@ class ItemsActivity : AppCompatActivity(),
     }
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this)[ItemsActivityViewModel::class.java]
+        ViewModelProvider(this)[ItemsActivityViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_items)
+
+        binding = ActivityItemsBinding.inflate(layoutInflater)
+
+        fab = binding.appBarItems.fab
+        drawerLayout = binding.drawerLayout
+        toolbar = binding.appBarItems.toolbar
+        navView = binding.navView
+        listItems = binding.appBarItems.contentItems.listItems
+
+        setContentView(binding.root)
         setSupportActionBar(toolbar)
 
-//        val fab: FloatingActionButton = findViewById(R.id.fab)
+
         fab.setOnClickListener {
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
         if (viewModel.isNewlyCreated && savedInstanceState != null)
             viewModel.restoreState(savedInstanceState)
+
         viewModel.isNewlyCreated = false
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open,
+            this, drawerLayout, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
 
-        drawer_layout.addDrawerListener(toggle)
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val menu = nav_view.menu
+        val menu = navView.menu
 
         val menuItem = menu.findItem(R.id.nav_how_many)
 
         menuItem.title = "Notes: ${DataManager.notes.size} | Courses: ${DataManager.courses.size}"
 
-        nav_view.setNavigationItemSelectedListener(this)
+        navView.setNavigationItemSelectedListener(this)
+
     }
 
 
@@ -84,21 +103,21 @@ class ItemsActivity : AppCompatActivity(),
         listItems.layoutManager = noteLayoutManager
         listItems.adapter = noteRecycleAdapter
 
-        nav_view.menu.findItem(R.id.nav_notes).isCheckable = true
+        navView.menu.findItem(R.id.nav_notes).isCheckable = true
     }
 
     private fun displayCourses() {
         listItems.layoutManager = courseLayoutManager
         listItems.adapter = courseRecycleAdapter
 
-        nav_view.menu.findItem(R.id.nav_courses).isCheckable = true
+        navView.menu.findItem(R.id.nav_courses).isCheckable = true
     }
 
     private fun displayRecentlyNotes() {
         listItems.layoutManager = noteLayoutManager
         listItems.adapter = recentlyViewNotesRecycleAdapter
 
-        nav_view.menu.findItem(R.id.nav_courses).isCheckable = true
+        navView.menu.findItem(R.id.nav_courses).isCheckable = true
     }
 
     override fun onResume() {
@@ -107,8 +126,8 @@ class ItemsActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -142,11 +161,11 @@ class ItemsActivity : AppCompatActivity(),
             }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun handleDisplaySelection(itemId: Int) {
+    private fun handleDisplaySelection(itemId: Int) {
         when(itemId){
             R.id.nav_notes -> {
                 displayNotes()

@@ -1,33 +1,54 @@
 package com.israteneda.notekeeper
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-
-import kotlinx.android.synthetic.main.activity_main.toolbar
-import kotlinx.android.synthetic.main.content_main.*
+import com.israteneda.notekeeper.databinding.ActivityMainBinding
 
 class NoteActivity : AppCompatActivity() {
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
 
-    val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
+    private val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
 
-    val locManager = PseudoLocationManager(this) { lat,lon ->
+    private val locManager = PseudoLocationManager(this) { lat, lon ->
         Log.d(tag, "Location Callback Lat:$lat Lon:$lon")
     }
 
+    /* bindings */
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var spinnerCourses: Spinner
+    private lateinit var textNoteTitle: EditText
+    private lateinit var textNoteText: EditText
+
+    /* bindings */
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        toolbar = binding.toolbar
+        spinnerCourses = binding.contentMain.spinnerCourses
+        textNoteTitle = binding.contentMain.textNoteTitle
+        textNoteText = binding.contentMain.textNoteText
+
+        setContentView(binding.root)
         setSupportActionBar(toolbar)
 
-        val adapterCourses = ArrayAdapter<CourseInfo>(this,
+        val adapterCourses = ArrayAdapter(this,
             android.R.layout.simple_spinner_item,
             DataManager.courses.values.toList())
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -37,8 +58,10 @@ class NoteActivity : AppCompatActivity() {
         notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?:
             intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
 
-        if(notePosition != POSITION_NOT_SET)
+
+        if(notePosition != POSITION_NOT_SET) {
             displayNote()
+        }
         else {
             createNote()
         }
@@ -67,6 +90,7 @@ class NoteActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         if (notePosition >= DataManager.notes.lastIndex){
             val menuItem = menu?.findItem(R.id.action_next)
@@ -119,8 +143,8 @@ class NoteActivity : AppCompatActivity() {
 
         Log.i(tag, "Displaying note for position $notePosition")
         val note = DataManager.notes[notePosition]
-        textNoteTitle.setText(note.title)
-        textNoteText.setText(note.text)
+        (textNoteTitle as TextView).text = note.title
+        (textNoteText as TextView).text = note.text
 
         val coursePosition = DataManager.courses.values.indexOf(note.course)
         spinnerCourses.setSelection(coursePosition)
