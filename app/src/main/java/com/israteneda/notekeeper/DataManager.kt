@@ -27,7 +27,7 @@ object DataManager {
 
     fun isLastNoteId(noteId: Int) = noteId == notes.lastIndex
 
-    fun idOfNote(note: NoteInfo) = notes.indexOf(note)
+    private fun idOfNote(note: NoteInfo) = notes.indexOf(note)
 
     fun noteIdsAsIntArray(notes: List<NoteInfo>): IntArray {
         val noteIds = IntArray(notes.size)
@@ -53,19 +53,19 @@ object DataManager {
         return null
     }
 
-    fun initializeCourses() {
+    private fun initializeCourses() {
         var course = CourseInfo(title = "Java Fundamentals: The Java Language", courseId = "java_lang")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
 
         course = CourseInfo("android_intents", "Android Programming with Intents")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
 
         course = CourseInfo(courseId = "android_async", title = "Android Async Programming and Services")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
 
 
         course = CourseInfo("java_core", "Java Fundamentals: The Core Platform")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
     }
 
     fun initializeNotes() {

@@ -13,7 +13,7 @@ class CourseRecycleAdapter(private val context: Context, private val courses: Li
     private val layoutInflter = LayoutInflater.from(context)
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val textCourse = itemView.findViewById<TextView>(R.id.textCourse)
+        val textCourse: TextView = itemView.findViewById(R.id.textCourse)
         var coursePosition = 0
     }
 
